@@ -340,17 +340,21 @@ public:
       );
     }
 
-    std::cout << "This device supports the following formats:" << std::endl;
     for (auto fmt : this->supported_formats()) {
-      // Always list the devices supported formats for the user
-      std::cout << "\t" << fmt.format.description << " ";
-      std::cout << fmt.v4l2_fmt.width << " x " << fmt.v4l2_fmt.height << " (";
-      std::cout << fmt.v4l2_fmt.discrete.denominator / fmt.v4l2_fmt.discrete.numerator << " Hz)";
-      std::cout << std::endl;
-
       if (fmt.v4l2_fmt.pixel_format == found_driver_format->v4l2()) {
         result = true;
         m_image.pixel_format = found_driver_format;
+      }
+    }
+    
+    if (!result) {
+      std::cout << "This device supports the following formats:" << std::endl;
+      for (auto fmt : this->supported_formats()) {
+        // Always list the devices supported formats for the user
+        std::cout << "\t" << fmt.format.description << " ";
+        std::cout << fmt.v4l2_fmt.width << " x " << fmt.v4l2_fmt.height << " (";
+        std::cout << fmt.v4l2_fmt.discrete.denominator / fmt.v4l2_fmt.discrete.numerator << " Hz)";
+        std::cout << std::endl;
       }
     }
 
